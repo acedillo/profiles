@@ -22,7 +22,7 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback,
         ActivityCompat.OnRequestPermissionsResultCallback, GoogleApiClient.OnConnectionFailedListener {
 
 
-    private val MY_PERMISSIONS_REQUEST_FINE_LOCATION: Int = 0
+    private val PERMISSIONS_REQUEST_FINE_LOCATION: Int = 0
     private val DEFAULT_MAP_ZOOM: Float = 15f
 
     private var mMap: GoogleMap? = null
@@ -58,7 +58,7 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback,
         }
         ActivityCompat.requestPermissions(this,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                MY_PERMISSIONS_REQUEST_FINE_LOCATION)
+                PERMISSIONS_REQUEST_FINE_LOCATION)
 
         mMap!!.setOnMapLongClickListener { latLng ->
             val markerOptions = MarkerOptions()
@@ -74,7 +74,7 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback,
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when(requestCode){
-            MY_PERMISSIONS_REQUEST_FINE_LOCATION ->  if(grantResults.isEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            PERMISSIONS_REQUEST_FINE_LOCATION ->  if(grantResults.isEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 sendUserToCurrentLocation()
             }
         }
