@@ -6,7 +6,7 @@ android {
     buildToolsVersion "26.0.0"
 
     defaultConfig {
-        applicationId "ferro.places.com.places"
+        applicationId "com.ferro.app.profiles"
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 1

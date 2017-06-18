@@ -29,7 +29,7 @@
             android:value="AIzaSyA_KcCNnIKyr_AEkSpw-DHm5UYd-td1rzk" />
 
         <activity
-            android:name="ferro.places.com.profiles.MapsActivity"
+            android:name="com.ferro.app.profiles.MapsActivity"
             android:label="@string/title_activity_maps2">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

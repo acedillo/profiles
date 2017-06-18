@@ -1,4 +1,4 @@
-package ferro.places.com.profiles
+package com.ferro.app.profiles
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -15,6 +15,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import ferro.places.com.profiles.R
 
 class MapsActivity : FragmentActivity(), OnMapReadyCallback,
         ActivityCompat.OnRequestPermissionsResultCallback, GoogleApiClient.OnConnectionFailedListener {
@@ -24,9 +26,6 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback,
     private val DEFAULT_MAP_ZOOM: Float = 15f
 
     private var mMap: GoogleMap? = null
-    private var googleApiClient : GoogleApiClient? = null
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +60,12 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 MY_PERMISSIONS_REQUEST_FINE_LOCATION)
 
+        mMap!!.setOnMapLongClickListener { latLng ->
+            val markerOptions = MarkerOptions()
+            markerOptions.position(latLng)
+            mMap!!.addMarker(markerOptions)
+        }
+
     }
 
     override fun onConnectionFailed(p0: ConnectionResult) {
@@ -91,5 +96,6 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback,
             }
         })
     }
+
 
 }
