@@ -12,6 +12,7 @@
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
     <FrameLayout
         android:id="@+id/mapActivityFLContainer"
         android:layout_width="match_parent"
@@ -29,6 +30,7 @@
             android:layout_width="@dimen/floating_button_dimen"
             android:layout_height="@dimen/floating_button_dimen"
             android:layout_gravity="bottom|end"
+            android:src="@drawable/ic_add_background"
             android:layout_marginBottom="@dimen/floating_button_margin_bottom"
             android:layout_marginEnd="@dimen/floating_button_margin_end" />
 
