@@ -15,7 +15,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import ferro.places.com.profiles.R
 
 class MapsActivity : FragmentActivity(), OnMapReadyCallback,
@@ -59,13 +58,6 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback,
         ActivityCompat.requestPermissions(this,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 PERMISSIONS_REQUEST_FINE_LOCATION)
-
-        mMap!!.setOnMapLongClickListener { latLng ->
-            val markerOptions = MarkerOptions()
-            markerOptions.position(latLng)
-            mMap!!.addMarker(markerOptions)
-        }
-
     }
 
     override fun onConnectionFailed(p0: ConnectionResult) {
