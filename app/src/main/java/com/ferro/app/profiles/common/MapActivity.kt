@@ -1,48 +1,29 @@
-package com.ferro.app.profiles
+package com.ferro.app.profiles.common
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import com.ferro.app.profiles.settings.SettingsActivity
-import com.ferro.app.profiles.settings.SettingsFragment
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import kotlinx.android.synthetic.main.activity_maps.*
+import com.google.android.gms.maps.model.MarkerOptions
 
-import ferro.places.com.profiles.R
-
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
+/**
+ * Created by Abraham on 6/20/2017.
+ */
+open class MapActivity : AppCompatActivity(), OnMapReadyCallback,
         ActivityCompat.OnRequestPermissionsResultCallback, GoogleApiClient.OnConnectionFailedListener {
 
+    protected val PERMISSIONS_REQUEST_FINE_LOCATION: Int = 0
 
-    private val PERMISSIONS_REQUEST_FINE_LOCATION: Int = 0
-    private val DEFAULT_MAP_ZOOM: Float = 15f
-
-    private var mMap: GoogleMap? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_maps)
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        val mapFragment = supportFragmentManager
-                .findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
-        addLocationButton.setOnClickListener { view ->
-           val intent : Intent = Intent(this@MapsActivity, SettingsActivity::class.java)
-            startActivity(intent)
-        }
-    }
+    protected var mMap : GoogleMap? = null
 
     /**
      * Manipulates the map once available.
@@ -60,9 +41,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         mMap!!.uiSettings.setAllGesturesEnabled(true)
         mMap!!.mapType = GoogleMap.MAP_TYPE_NORMAL
 
-        val permission : Int = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-        if(permission == PackageManager.PERMISSION_GRANTED) {
-           sendUserToCurrentLocation()
+        val permission: Int = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (permission == PackageManager.PERMISSION_GRANTED) {
+            sendUserToCurrentLocation()
         }
         ActivityCompat.requestPermissions(this,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
@@ -74,29 +55,29 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when(requestCode){
-            PERMISSIONS_REQUEST_FINE_LOCATION ->  if(grantResults.isEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        when (requestCode) {
+            PERMISSIONS_REQUEST_FINE_LOCATION -> if (grantResults.isEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 sendUserToCurrentLocation()
             }
         }
     }
 
-    private fun sendUserToCurrentLocation() {
-        var latLng : LatLng
+    protected open fun sendUserToCurrentLocation(addMarker: Boolean = false, zoom: Float = 15f) {
+        var latLng: LatLng
         val locationClient = LocationServices.getFusedLocationProviderClient(this)
         mMap!!.isMyLocationEnabled = true
         locationClient.lastLocation.addOnSuccessListener(this, { location ->
-            if(location != null) {
-
+            if (location != null) {
                 latLng = LatLng(location.latitude, location.longitude)
                 val cameraPosition = CameraPosition.Builder()
-                        .zoom(DEFAULT_MAP_ZOOM)
+                        .zoom(zoom)
                         .target(latLng)
                         .build()
                 mMap!!.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+                if(addMarker){
+                    mMap!!.addMarker(MarkerOptions().position(latLng).draggable(true))
+                }
             }
         })
     }
-
-
 }
