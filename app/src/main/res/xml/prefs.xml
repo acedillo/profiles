@@ -3,17 +3,27 @@
     <PreferenceCategory
         android:title="@string/title_first_section">
 
-        <CheckBoxPreference
-            android:key="checkbox_preference"
-            android:title="@string/title_checkbox_preference"
-            android:defaultValue="@string/default_checkbox_preference"/>
+        <Preference
+            android:showDefault="true"
+            android:showSilent="true"
+            android:title="something"
+            android:ringtoneType="ringtone|notification|alarm|all"
+            android:key="ring_tone_preference"
+            android:persistent="false"/>
+
+        <SeekBarPreference
+            android:key="keyName"
+            android:title="Property Label"
+            android:summary="Summary."
+            android:max="5"
+            android:defaultValue="0" />
 
         <EditTextPreference
             android:key="edittext_preference"
             android:title="@string/title_edittext_preference"
             android:summary="@string/summary_edittext_preference"
             android:dialogTitle="@string/dialog_title_edittext_preference"
-            android:dependency="checkbox_preference" />
+            />
 
     </PreferenceCategory>
 

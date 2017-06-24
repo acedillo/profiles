@@ -1,15 +1,9 @@
 package com.ferro.app.profiles
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
 import com.ferro.app.profiles.common.MapActivity
 import com.ferro.app.profiles.settings.SettingsActivity
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import ferro.places.com.profiles.R
 import kotlinx.android.synthetic.main.activity_maps.*
