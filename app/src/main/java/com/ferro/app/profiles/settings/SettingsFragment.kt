@@ -1,19 +1,15 @@
 package com.ferro.app.profiles.settings
 
 import android.content.Context
+import android.content.Intent
+import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.support.v4.app.Fragment
+import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceFragmentCompat
 import ferro.places.com.profiles.R
-import android.media.RingtoneManager
-import android.content.Intent
-import android.provider.Settings
-import android.provider.Settings.System.DEFAULT_NOTIFICATION_URI
-import android.support.v7.preference.Preference
-import android.media.Ringtone
-
-
 
 
 /**
@@ -28,7 +24,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private val ARG_PARAM1 : String = "settings.fragment.blah"
     private val ARG_PARAM2 : String = "settings.fragment.blah"
-    private val KEY_RINGTONE_PREFERENCE: String = "ring_tone_preference"
+    private val KEY_RINGTONE_PREFERENCE: String = "ringtone.preference"
     private val REQUEST_CODE_ALERT_RINGTONE: Int = 1
 
     private var mParam1: String? = null
@@ -65,7 +61,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
-        if (preference.getKey().equals(KEY_RINGTONE_PREFERENCE)) {
+        if (preference.key == KEY_RINGTONE_PREFERENCE) {
             val intent = Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_RINGTONE)
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true)
