@@ -1,13 +1,15 @@
 package com.ferro.app.profiles.settings
 
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.widget.SeekBar
 import com.ferro.app.profiles.common.MapActivity
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.Circle
+import com.google.android.gms.maps.model.CircleOptions
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import ferro.places.com.profiles.R
 import kotlinx.android.synthetic.main.activity_settings.*
 

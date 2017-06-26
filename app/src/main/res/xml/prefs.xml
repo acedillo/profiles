@@ -3,12 +3,12 @@
     <PreferenceCategory
         android:title="@string/title_ringtone_section">
 
-        <Preference
+        <RingtonePreference
             android:showDefault="true"
             android:showSilent="true"
             android:title="@string/title_ringtone_setting"
             android:ringtoneType="ringtone|notification|alarm|all"
-            android:key="ringtone.preference"
+            android:key="alertringtone"
             android:persistent="false"/>
 
         <com.ferro.app.profiles.settings.VolumePreference
@@ -19,12 +19,12 @@
     <PreferenceCategory
         android:title="@string/title_wireless_section">
 
-        <SwitchPreferenceCompat
+        <SwitchPreference
             android:key="wifi.preference"
             android:title="@string/title_wifi_preference"
             android:icon="@drawable/ic_wifi_pref"/>
 
-        <SwitchPreferenceCompat
+        <SwitchPreference
             android:key="bluetooth.preference"
             android:title="@string/title_bluetooth_preference"
             android:icon="@drawable/ic_bluetooth_pref"/>
