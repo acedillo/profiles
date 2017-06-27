@@ -1,7 +1,7 @@
 package com.ferro.app.profiles.settings
 
 import android.net.Uri
-import android.os.Bundle
+import android.view.Menu
 import android.widget.SeekBar
 import com.ferro.app.profiles.common.MapActivity
 import com.google.android.gms.maps.GoogleMap
@@ -16,19 +16,21 @@ import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : MapActivity(), SettingsFragment.OnFragmentInteractionListener {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
-        setSupportActionBar(mToolbar)
-        supportActionBar?.setTitle(R.string.settings_title)
-
-        setup()
+    override fun getLayoutId(): Int {
+        return R.layout.activity_settings
     }
 
-    private fun setup() {
+    override fun setup() {
+        supportActionBar?.setTitle(R.string.settings_title)
+
         val mapFragment = supportFragmentManager
-                .findFragmentById(R.id.map) as SupportMapFragment
+                .findFragmentById(R.id.mMap) as SupportMapFragment
         mapFragment.getMapAsync(this)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_settings, menu)
+        return super.onPrepareOptionsMenu(menu)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {

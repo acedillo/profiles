@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
@@ -18,7 +17,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 /**
  * Created by Abraham on 6/20/2017.
  */
-open class MapActivity : AppCompatActivity(), OnMapReadyCallback,
+ abstract class MapActivity : BaseActivity(), OnMapReadyCallback,
         ActivityCompat.OnRequestPermissionsResultCallback, GoogleApiClient.OnConnectionFailedListener {
 
     protected val PERMISSIONS_REQUEST_FINE_LOCATION: Int = 0

@@ -6,6 +6,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="settings_save">Save</string>
+
     <string name="title_checkbox_preference">checkbox</string>
     <string name="title_ringtone_section">Ringtone settings</string>
     <string name="title_ringtone_setting">Ringtone</string>

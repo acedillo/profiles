@@ -1,0 +1,22 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mMapActivityFLContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <tools:fragment xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/mMap"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.ferro.app.profiles.HomeActivity" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/mAddLocationButton"
+        android:layout_width="@dimen/floating_button_dimen"
+        android:layout_height="@dimen/floating_button_dimen"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="@dimen/floating_button_margin_bottom"
+        android:layout_marginEnd="@dimen/floating_button_margin_end"
+        android:src="@drawable/ic_add_background" />
+
+</FrameLayout>
