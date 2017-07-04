@@ -58,6 +58,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
     }
 
     protected open fun sendUserToCurrentLocation(addMarker: Boolean = false, zoom: Float = 15f) {
-        MapUtil.sentUserToCurrentLocation(this, mMap!!)
+        MapUtil.sentUserToCurrentLocation(this, mMap!!, addMarker)
     }
 }
