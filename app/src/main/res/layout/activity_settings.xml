@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ferro.app.profiles.settings.SettingsActivity">
+    tools:context="com.ferro.app.profiles.settings.MapSettingsActivity">
 
     <tools:fragment xmlns:tools="http://schemas.android.com/tools"
         android:layout_weight="8"
@@ -12,7 +12,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        tools:context="com.ferro.app.profiles.settings.SettingsActivity"/>
+        tools:context="com.ferro.app.profiles.settings.MapSettingsActivity"/>
 
     <android.support.v7.widget.AppCompatSeekBar
         android:id="@+id/mMapCircleSizeSeekBar"

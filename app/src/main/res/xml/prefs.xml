@@ -27,7 +27,7 @@
         <SwitchPreference
             android:key="bluetooth.preference"
             android:title="@string/title_bluetooth_preference"
-            android:icon="@drawable/ic_bluetooth_pref"/>
+            android:icon="@drawable/ic_bluetooth"/>
 
        </PreferenceCategory>
 
