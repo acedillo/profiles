@@ -1,4 +1,4 @@
-package com.ferro.app.profiles.common
+package com.ferro.app.profiles.common.activity
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -46,7 +46,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
     }
 
     override fun onConnectionFailed(p0: ConnectionResult) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+       //NOP TODO:do something?
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

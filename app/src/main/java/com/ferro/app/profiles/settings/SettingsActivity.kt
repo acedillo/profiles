@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import com.ferro.app.profiles.common.BaseActivity
+import com.ferro.app.profiles.common.activity.BaseActivity
 import com.ferro.app.profiles.settings.bluetooth.BluetoothSettingsFragment
 import ferro.places.com.profiles.R
 

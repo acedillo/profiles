@@ -1,4 +1,4 @@
-package com.ferro.app.profiles.common
+package com.ferro.app.profiles.common.activity
 
 import android.app.Fragment
 import android.os.Bundle

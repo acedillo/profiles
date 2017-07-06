@@ -3,7 +3,7 @@ package com.ferro.app.profiles
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import com.ferro.app.profiles.common.MapActivity
+import com.ferro.app.profiles.common.activity.MapActivity
 import com.ferro.app.profiles.settings.MODE_BLUETOOTH
 import com.ferro.app.profiles.settings.MODE_SETTINGS
 import com.ferro.app.profiles.settings.MapSettingsActivity

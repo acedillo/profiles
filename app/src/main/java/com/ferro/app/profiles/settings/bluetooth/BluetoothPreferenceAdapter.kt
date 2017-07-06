@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import android.widget.TextView
-import com.ferro.app.profiles.settings.bluetooth.model.BluetoothDevicePreference
+import com.ferro.app.profiles.common.data.enitity.BluetoothDevicePreference
 import ferro.places.com.profiles.R
 
 

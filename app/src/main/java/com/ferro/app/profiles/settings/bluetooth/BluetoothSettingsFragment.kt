@@ -11,7 +11,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.ferro.app.profiles.settings.bluetooth.model.BluetoothDevicePreference
+import com.ferro.app.profiles.common.data.enitity.BluetoothDevicePreference
 import ferro.places.com.profiles.R
 import kotlinx.android.synthetic.main.fragment_bluetooth_settings.*
 
@@ -57,7 +57,7 @@ class BluetoothSettingsFragment : Fragment(), ActivityCompat.OnRequestPermission
 
     private fun getBluetoothDevices(): List<BluetoothDevicePreference> {
 
-        val bluetoothDeviceList : MutableList<BluetoothDevicePreference> = arrayListOf()
+        val bluetoothDeviceList: MutableList<BluetoothDevicePreference> = arrayListOf()
         val bondedDevices = BluetoothAdapter.getDefaultAdapter().bondedDevices
 
         bondedDevices.mapTo(bluetoothDeviceList) {
