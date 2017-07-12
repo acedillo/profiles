@@ -2,9 +2,17 @@ package com.ferro.app.profiles.settings
 
 import android.content.Context
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Bundle
+import android.preference.Preference
 import android.preference.PreferenceFragment
+import android.preference.RingtonePreference
+import android.preference.SwitchPreference
 import android.support.v4.app.Fragment
+import android.view.View
+import android.widget.Toast
+import com.ferro.app.profiles.common.data.SettingsManager
+import com.ferro.app.profiles.common.data.enitity.PlaceSettings
 import ferro.places.com.profiles.R
 
 
@@ -16,18 +24,18 @@ import ferro.places.com.profiles.R
  * Use the [SettingsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class SettingsFragment : PreferenceFragment() {
+class SettingsFragment : PreferenceFragment(), SettingsInterface {
+    private val ARG_PARAM1: String = "settings.fragment.blah"
 
-    private val ARG_PARAM1 : String = "settings.fragment.blah"
-    private val ARG_PARAM2 : String = "settings.fragment.blah"
+    private val ARG_PARAM2: String = "settings.fragment.blah"
     private val KEY_RINGTONE_PREFERENCE: String = "ringtone.preference"
     private val REQUEST_CODE_ALERT_RINGTONE: Int = 1
-
     private var mParam1: String? = null
-    private var mParam2: String? = null
 
+    private var mParam2: String? = null
     private var mListener: OnFragmentInteractionListener? = null
 
+    private var mRingtone: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
@@ -37,10 +45,19 @@ class SettingsFragment : PreferenceFragment() {
         addPreferencesFromResource(R.xml.prefs)
     }
 
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        var ringtonePreference = findPreference(getString(R.string.ringtone_preference_key)) as RingtonePreference
+        ringtonePreference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+            mRingtone = newValue as String
+            true
+        }
+        super.onViewCreated(view, savedInstanceState)
+    }
+
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
-            mListener = context as OnFragmentInteractionListener?
+            mListener = context
         } else {
             throw RuntimeException(context!!.toString() + " must implement OnFragmentInteractionListener")
         }
@@ -51,8 +68,30 @@ class SettingsFragment : PreferenceFragment() {
         mListener = null
     }
 
+    override fun save() {
+        val volumePreference = findPreference(getString(R.string.volume_preference_key)) as VolumePreference
+        val wifiPreference = findPreference(getString(R.string.wifi_preference_key)) as SwitchPreference
+        val bluetoothPreference = findPreference(getString(R.string.bluetooth_preference_key)) as SwitchPreference
+
+        val settings: PlaceSettings = PlaceSettings()
+
+        settings.ringtone = mRingtone
+        settings.bluetoothOn = bluetoothPreference.isChecked
+        settings.wifiOn = wifiPreference.isChecked
+        settings.ringtoneVolume = volumePreference.getProgress()
+
+        object : AsyncTask<PlaceSettings, Void, Unit>(){
+            override fun doInBackground(vararg params: PlaceSettings?): Unit {
+               return SettingsManager.getPlacesDao(activity).addPlace(settings)
+            }
+
+            override fun onPostExecute(result: Unit?) {
+                Toast.makeText(activity, "data saved", Toast.LENGTH_LONG).show()
+            }
+        }.execute()
 
 
+    }
 
     private fun setRingtonPreferenceValue(ringtone: String) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

@@ -38,8 +38,15 @@ abstract class BaseActivity : AppCompatActivity(), ActivityCompat.OnRequestPermi
      */
     open fun addFragment(fragment: Fragment){
         fragmentManager.beginTransaction()
-                .add(R.id.activityFLContainer, fragment)
+                .add(R.id.activityFLContainer, fragment, fragment.javaClass.name)
+                .addToBackStack(fragment.javaClass.name)
                 .commit()
+    }
+
+    open fun getCurrentFragment(): Fragment {
+        val fragmentTag = fragmentManager.getBackStackEntryAt(fragmentManager.backStackEntryCount - 1).name
+        val currentFragment = fragmentManager.findFragmentByTag(fragmentTag)
+        return currentFragment
     }
 
     /**

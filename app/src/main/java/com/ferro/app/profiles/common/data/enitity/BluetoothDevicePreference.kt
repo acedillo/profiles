@@ -7,13 +7,18 @@ import android.arch.persistence.room.PrimaryKey
 /**
  * Created by Abraham on 7/4/2017.
  */
-@Entity(tableName = "setting")
-open class BluetoothDevicePreference {
+@Entity(tableName = "Bluetooth_setting")
+open class BluetoothDevicePreference(){
+
+    constructor(name : String, volumeLevel : Int) : this(){
+        this.volumeLevel = volumeLevel
+        this.name = name
+    }
 
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0
+    var id: Int = 0
     @ColumnInfo(name = "name")
-    val name: String = ""
+    var name: String = ""
     @ColumnInfo(name = "volume_level")
-    val volumeLevel: Int = 0
+    var volumeLevel: Int = 0
 }

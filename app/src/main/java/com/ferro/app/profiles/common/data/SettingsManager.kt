@@ -9,7 +9,7 @@ import com.ferro.app.profiles.common.data.database.PlacesDataBase
 /**
  * Created by Abraham on 7/5/2017.
  */
-object ProfileManager {
+object SettingsManager {
     var mDataBase: PlacesDataBase? = null
 
     private fun getDataBase(context: Context) : PlacesDataBase?{

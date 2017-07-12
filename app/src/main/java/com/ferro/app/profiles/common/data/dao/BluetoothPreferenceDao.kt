@@ -9,7 +9,7 @@ import com.ferro.app.profiles.common.data.enitity.BluetoothDevicePreference
 @Dao
 interface BluetoothPreferenceDao {
 
-    @Query("SELECT * FROM setting")
+    @Query("SELECT * FROM bluetooth_setting")
     fun getBluetoothDevicePreferenceList() : List<BluetoothDevicePreference>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

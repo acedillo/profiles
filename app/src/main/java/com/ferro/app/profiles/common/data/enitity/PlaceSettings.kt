@@ -10,21 +10,21 @@ import android.arch.persistence.room.PrimaryKey
 @Entity(tableName = "setting")
 class PlaceSettings {
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0
+    var id: Int = 0
     @ColumnInfo(name = "name")
-    val name: String = ""
+    var name: String = ""
     @ColumnInfo(name = "latitude")
-    val latitude: Double = 0.0
+    var latitude: Double = 200.0
     @ColumnInfo(name = "longitude")
-    val longitude: Double = 0.0
+    var longitude: Double = 200.0
     @ColumnInfo(name = "radius")
-    val radius : Int = 0
+    var radius : Int = 0
     @ColumnInfo(name = "ringtone")
-    val ringtone: String = ""
+    var ringtone: String = ""
     @ColumnInfo(name = "volume")
-    val ringtoneVolume: Int = 0
+    var ringtoneVolume: Int = 0
     @ColumnInfo(name = "wifi_on")
-    val wifiOn: Boolean = false
+    var wifiOn: Boolean = false
     @ColumnInfo (name = "bluetooth_on")
-    val bluetoothOn: Boolean = false
+    var bluetoothOn: Boolean = false
 }

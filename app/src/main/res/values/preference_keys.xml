@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ringtone_preference_key">pref.ringtone</string>
+    <string name="volume_preference_key">pref.volume</string>
+    <string name="wifi_preference_key">pref.wifi</string>
+    <string name="bluetooth_preference_key">pref.bluetooth</string>
+</resources>

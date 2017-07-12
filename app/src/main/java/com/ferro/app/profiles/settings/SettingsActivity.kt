@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.MenuItem
 import com.ferro.app.profiles.common.activity.BaseActivity
 import com.ferro.app.profiles.settings.bluetooth.BluetoothSettingsFragment
 import ferro.places.com.profiles.R
@@ -39,6 +40,17 @@ class SettingsActivity : BaseActivity(), SettingsFragment.OnFragmentInteractionL
             addFragment(BluetoothSettingsFragment())
         }
     }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if(item!!.itemId == R.id.action_save){
+            val fragment = getCurrentFragment()
+            if(fragment is SettingsInterface){
+                fragment.save()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 
     inner class IntentBuilder(context: Context) {
 
