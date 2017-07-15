@@ -7,21 +7,15 @@
 
     <string name="settings_save">Save</string>
 
-    <string name="title_checkbox_preference">checkbox</string>
+    <string name="title_volume_section">Volume</string>
     <string name="title_ringtone_section">Ringtone settings</string>
-    <string name="title_ringtone_setting">Ringtone</string>
-    <string name="title_default_checkbox_preference">checkbox title</string>
-    <string name="default_checkbox_preference">checkbox pref</string>
-    <string name="title_edittext_preference">preference</string>
-    <string name="summary_edittext_preference">summary preference</string>
-    <string name="dialog_title_edittext_preference">dialog preference</string>
     <string name="title_wireless_section">Wireless</string>
+    <string name="title_ringtone_setting">Ringtone</string>
+
     <string name="title_wifi_preference">Wi-fi</string>
     <string name="title_bluetooth_preference">Bluetooth</string>
 
-    <string name="title_list_preference">title list </string>
-    <string name="dialog_title_list_preference">dialog list preference</string>
-    <string name="title_intent_preference">title intnet </string>
+
     <string name="settings_title">New Location</string>
     <string name="main_bluetooth">main bluetooth</string>
     <string name="main_prefs">Default settings</string>

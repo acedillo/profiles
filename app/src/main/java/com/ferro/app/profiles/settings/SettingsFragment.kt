@@ -21,37 +21,54 @@ import ferro.places.com.profiles.R
  * Activities that contain this fragment must implement the
  * [SettingsFragment.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [SettingsFragment.newInstance] factory method to
- * create an instance of this fragment.
  */
 class SettingsFragment : PreferenceFragment(), SettingsInterface {
-    private val ARG_PARAM1: String = "settings.fragment.blah"
 
-    private val ARG_PARAM2: String = "settings.fragment.blah"
-    private val KEY_RINGTONE_PREFERENCE: String = "ringtone.preference"
-    private val REQUEST_CODE_ALERT_RINGTONE: Int = 1
-    private var mParam1: String? = null
-
-    private var mParam2: String? = null
     private var mListener: OnFragmentInteractionListener? = null
+    private var mDefaultSettings: PlaceSettings? = null
+
+    private var mVolumePreference : VolumePreference? = null
+    private var mWifiPreference : SwitchPreference? = null
+    private var mBluetoothPreference : SwitchPreference? = null
 
     private var mRingtone: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments != null) {
-            mParam1 = arguments.getString(ARG_PARAM1)
-            mParam2 = arguments.getString(ARG_PARAM2)
-        }
         addPreferencesFromResource(R.xml.prefs)
+
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        var ringtonePreference = findPreference(getString(R.string.ringtone_preference_key)) as RingtonePreference
+        val ringtonePreference = findPreference(getString(R.string.ringtone_preference_key)) as RingtonePreference
         ringtonePreference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
             mRingtone = newValue as String
             true
         }
+        object : AsyncTask<Void, Void, PlaceSettings>(){
+            override fun doInBackground(vararg params: Void?): PlaceSettings {
+                val defaultPlaceSettings = SettingsManager.getPlacesDao(activity).getDefaultPlaceSettings()
+                if(defaultPlaceSettings.isEmpty()){
+                    return PlaceSettings()
+                }
+                return defaultPlaceSettings[0]
+            }
+
+            override fun onPostExecute(result: PlaceSettings?) {
+                initializeSettings(result)
+            }
+        }.execute()
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun initializeSettings(settings: PlaceSettings?) {
+        mDefaultSettings = settings
+        mVolumePreference = findPreference(getString(R.string.volume_preference_key)) as VolumePreference
+        mWifiPreference = findPreference(getString(R.string.wifi_preference_key)) as SwitchPreference
+        mBluetoothPreference = findPreference(getString(R.string.bluetooth_preference_key)) as SwitchPreference
+
+        mWifiPreference!!.isChecked = settings!!.wifiOn
+        mBluetoothPreference!!.isChecked = settings.bluetoothOn
+        mVolumePreference!!.setProgress(settings.ringtoneVolume)
     }
 
     override fun onAttach(context: Context?) {
@@ -69,32 +86,28 @@ class SettingsFragment : PreferenceFragment(), SettingsInterface {
     }
 
     override fun save() {
-        val volumePreference = findPreference(getString(R.string.volume_preference_key)) as VolumePreference
-        val wifiPreference = findPreference(getString(R.string.wifi_preference_key)) as SwitchPreference
-        val bluetoothPreference = findPreference(getString(R.string.bluetooth_preference_key)) as SwitchPreference
-
-        val settings: PlaceSettings = PlaceSettings()
-
-        settings.ringtone = mRingtone
-        settings.bluetoothOn = bluetoothPreference.isChecked
-        settings.wifiOn = wifiPreference.isChecked
-        settings.ringtoneVolume = volumePreference.getProgress()
-
+        fillSettingValues()
         object : AsyncTask<PlaceSettings, Void, Unit>(){
             override fun doInBackground(vararg params: PlaceSettings?): Unit {
-               return SettingsManager.getPlacesDao(activity).addPlace(settings)
+                val defaultPlaceSettings = SettingsManager.getPlacesDao(activity).getDefaultPlaceSettings()
+                if(defaultPlaceSettings.isEmpty()) {
+                    return SettingsManager.getPlacesDao(activity).addPlace(mDefaultSettings!!)
+                }else{
+                    return SettingsManager.getPlacesDao(activity).updatePlace(mDefaultSettings!!)
+                }
             }
 
             override fun onPostExecute(result: Unit?) {
                 Toast.makeText(activity, "data saved", Toast.LENGTH_LONG).show()
             }
         }.execute()
-
-
     }
 
-    private fun setRingtonPreferenceValue(ringtone: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private fun fillSettingValues(){
+        mDefaultSettings!!.ringtone = mRingtone
+        mDefaultSettings!!.bluetoothOn = mBluetoothPreference!!.isChecked
+        mDefaultSettings!!.wifiOn = mWifiPreference!!.isChecked
+        mDefaultSettings!!.ringtoneVolume = mVolumePreference!!.getProgress()
     }
 
     /**
@@ -109,25 +122,5 @@ class SettingsFragment : PreferenceFragment(), SettingsInterface {
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-
-     * @param param1 Parameter 1.
-     * *
-     * @param param2 Parameter 2.
-     * *
-     * @return A new instance of fragment SettingsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    fun newInstance(param1: String, param2: String): SettingsFragment {
-        val fragment = SettingsFragment()
-        val args = Bundle()
-        args.putString(ARG_PARAM1, param1)
-        args.putString(ARG_PARAM2, param2)
-        fragment.arguments = args
-        return fragment
     }
 }

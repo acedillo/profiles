@@ -11,6 +11,9 @@ interface PlacesDao {
     @Query("SELECT * FROM setting")
     fun getPlaceList() : List<PlaceSettings>
 
+    @Query("SELECT * FROM setting WHERE latitude == 200 AND longitude == 200")
+    fun getDefaultPlaceSettings() : List<PlaceSettings>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addPlace(vararg places : PlaceSettings)
 

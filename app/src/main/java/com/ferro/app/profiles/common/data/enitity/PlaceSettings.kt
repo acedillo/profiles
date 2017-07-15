@@ -24,7 +24,7 @@ class PlaceSettings {
     @ColumnInfo(name = "volume")
     var ringtoneVolume: Int = 0
     @ColumnInfo(name = "wifi_on")
-    var wifiOn: Boolean = false
+    var wifiOn: Boolean = true
     @ColumnInfo (name = "bluetooth_on")
-    var bluetoothOn: Boolean = false
+    var bluetoothOn: Boolean = true
 }

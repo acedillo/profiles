@@ -11,10 +11,12 @@
             android:key="@string/ringtone_preference_key"
             android:persistent="false"/>
 
-        <com.ferro.app.profiles.settings.VolumePreference
-            android:key="@string/volume_preference_key" />
-
     </PreferenceCategory>
+
+        <com.ferro.app.profiles.settings.VolumePreference
+            android:key="@string/volume_preference_key"
+            android:layout="@layout/preference_volume"/>
+
 
     <PreferenceCategory
         android:title="@string/title_wireless_section">
