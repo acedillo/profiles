@@ -18,7 +18,7 @@ class PlaceSettings {
     @ColumnInfo(name = "longitude")
     var longitude: Double = 200.0
     @ColumnInfo(name = "radius")
-    var radius : Int = 0
+    var radius : Double = 0.0
     @ColumnInfo(name = "ringtone")
     var ringtone: String = ""
     @ColumnInfo(name = "volume")

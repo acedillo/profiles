@@ -22,7 +22,8 @@ import ferro.places.com.profiles.R
  * [SettingsFragment.OnFragmentInteractionListener] interface
  * to handle interaction events.
  */
-class SettingsFragment : PreferenceFragment(), SettingsInterface {
+const val DEFAULT_LAT_LONG : Double = 200.0
+class SettingsFragment : PreferenceFragment(){
 
     private var mListener: OnFragmentInteractionListener? = null
     private var mDefaultSettings: PlaceSettings? = null
@@ -61,6 +62,10 @@ class SettingsFragment : PreferenceFragment(), SettingsInterface {
     }
 
     private fun initializeSettings(settings: PlaceSettings?) {
+
+        if(settings == null){
+            return
+        }
         mDefaultSettings = settings
         mVolumePreference = findPreference(getString(R.string.volume_preference_key)) as VolumePreference
         mWifiPreference = findPreference(getString(R.string.wifi_preference_key)) as SwitchPreference
@@ -85,15 +90,22 @@ class SettingsFragment : PreferenceFragment(), SettingsInterface {
         mListener = null
     }
 
-    override fun save() {
+    fun save(latitude: Double = DEFAULT_LAT_LONG, longitude: Double = DEFAULT_LAT_LONG, radius : Double = 0.0) {
         fillSettingValues()
+        mDefaultSettings!!.longitude = longitude
+        mDefaultSettings!!.latitude = latitude
+        mDefaultSettings!!.radius = radius
         object : AsyncTask<PlaceSettings, Void, Unit>(){
             override fun doInBackground(vararg params: PlaceSettings?): Unit {
                 val defaultPlaceSettings = SettingsManager.getPlacesDao(activity).getDefaultPlaceSettings()
-                if(defaultPlaceSettings.isEmpty()) {
-                    return SettingsManager.getPlacesDao(activity).addPlace(mDefaultSettings!!)
+                if(mDefaultSettings!!.latitude == DEFAULT_LAT_LONG) {
+                    if (defaultPlaceSettings.isEmpty()) {
+                        return SettingsManager.getPlacesDao(activity).addPlace(mDefaultSettings!!)
+                    } else {
+                        return SettingsManager.getPlacesDao(activity).updatePlace(mDefaultSettings!!)
+                    }
                 }else{
-                    return SettingsManager.getPlacesDao(activity).updatePlace(mDefaultSettings!!)
+                    return SettingsManager.getPlacesDao(activity).addPlace(mDefaultSettings!!)
                 }
             }
 

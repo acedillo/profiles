@@ -2,6 +2,7 @@ package com.ferro.app.profiles.settings
 
 import android.net.Uri
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.SeekBar
 import com.ferro.app.profiles.common.activity.MapActivity
 import com.google.android.gms.maps.GoogleMap
@@ -15,6 +16,8 @@ import kotlinx.android.synthetic.main.activity_settings.*
 
 
 class MapSettingsActivity : MapActivity(), SettingsFragment.OnFragmentInteractionListener {
+
+    var mCircle: Circle? = null
 
     override fun getLayoutId(): Int {
         return R.layout.activity_settings
@@ -34,13 +37,24 @@ class MapSettingsActivity : MapActivity(), SettingsFragment.OnFragmentInteractio
         mapFragment.getMapAsync(this)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if(item!!.itemId == R.id.action_save){
+            val settingsFragment = fragmentManager.findFragmentById(R.id.mSettingsFragment)
+            if(mCircle != null && settingsFragment is SettingsFragment){
+                settingsFragment.save(mCircle!!.center.latitude, mCircle!!.center.longitude, mCircle!!.radius)
+            }
+
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 
 
     override fun onMapReady(googleMap: GoogleMap) {
         super.onMapReady(googleMap)
         var position : LatLng? = null
         var radius : Double
-        var circle : Circle? = null
+
         val circleOptions: CircleOptions = CircleOptions()
                 .radius(1.0)
                 .strokeColor(R.color.colorPrimaryDark)
@@ -54,13 +68,13 @@ class MapSettingsActivity : MapActivity(), SettingsFragment.OnFragmentInteractio
                     position = mMap!!.cameraPosition?.target
                 }
 
-                if(circle == null){
+                if(mCircle == null){
                     circleOptions.center(position)
-                    circle = mMap!!.addCircle(circleOptions)
+                    mCircle = mMap!!.addCircle(circleOptions)
                 }
-                circle!!.center = position
+                mCircle!!.center = position
                 radius = progress.toDouble() * 2
-                circle!!.radius = radius
+                mCircle!!.radius = radius
 
 
             }
@@ -85,10 +99,10 @@ class MapSettingsActivity : MapActivity(), SettingsFragment.OnFragmentInteractio
 
             override fun onMarkerDragEnd(marker: Marker?) {
                 position = marker!!.position
-                circle!!.center = position
-                if(circle == null) {
+                mCircle!!.center = position
+                if(mCircle == null) {
                     circleOptions.center(position)
-                    circle = mMap!!.addCircle(circleOptions)
+                    mCircle = mMap!!.addCircle(circleOptions)
                 }
             }
         })

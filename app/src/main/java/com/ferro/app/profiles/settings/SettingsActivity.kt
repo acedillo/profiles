@@ -30,13 +30,13 @@ class SettingsActivity : BaseActivity(), SettingsFragment.OnFragmentInteractionL
 
     override fun setup(savedInstanceState: Bundle?) {
         var mode: Int = MODE_SETTINGS
-        val extras : Bundle = intent.extras
+        val extras: Bundle = intent.extras
         if (extras.containsKey(EXTRA_MODE)) {
             mode = extras.getInt(EXTRA_MODE)
         }
-        if(mode == MODE_SETTINGS){
+        if (mode == MODE_SETTINGS) {
             addFragment(SettingsFragment())
-        }else{
+        } else {
             addFragment(BluetoothSettingsFragment())
         }
     }
@@ -44,13 +44,16 @@ class SettingsActivity : BaseActivity(), SettingsFragment.OnFragmentInteractionL
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if(item!!.itemId == R.id.action_save){
             val fragment = getCurrentFragment()
-            if(fragment is SettingsInterface){
+            if(fragment is SettingsFragment){
                 fragment.save()
             }
+            if(fragment is BluetoothSettingsFragment){
+                fragment.save()
+            }
+
         }
         return super.onOptionsItemSelected(item)
     }
-
 
     inner class IntentBuilder(context: Context) {
 

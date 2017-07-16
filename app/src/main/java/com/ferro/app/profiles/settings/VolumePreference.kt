@@ -6,8 +6,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
-
-
+import ferro.places.com.profiles.R
 
 
 /**
@@ -16,15 +15,32 @@ import android.widget.SeekBar
 class VolumePreference : Preference {
 
     private var mVolumeBar : SeekBar? = null
+    private var mProgress : Int = 0
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attributes: AttributeSet) : super(context, attributes)
     constructor(context: Context, attributes: AttributeSet, defStyleAttr : Int) : super(context, attributes, defStyleAttr)
 
-    override fun onBindView(view: View?) {
-        super.onBindView(view)
-        //TODO find a better way to get the seekBar
-        mVolumeBar = (view as ViewGroup).getChildAt(1) as SeekBar
+    override fun onCreateView(parent: ViewGroup?): View {
+        val view = super.onCreateView(parent)
+        mVolumeBar = view.findViewById(R.id.mVolumeBar) as SeekBar
+
+        mVolumeBar!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                mProgress = progress
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+               //NOP
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                //NOP
+            }
+
+        })
+        mVolumeBar!!.progress = mProgress
+        return view
     }
 
     fun getProgress() : Int{
@@ -33,6 +49,9 @@ class VolumePreference : Preference {
 
     fun setProgress(progress : Int) {
         mVolumeBar!!.progress = progress
+        mProgress = progress
     }
+
+
 
 }

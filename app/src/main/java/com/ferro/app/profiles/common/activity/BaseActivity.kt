@@ -57,6 +57,7 @@ abstract class BaseActivity : AppCompatActivity(), ActivityCompat.OnRequestPermi
      open fun getLayoutId() : Int{
          return 0
      }
+
     abstract @MenuRes fun getMenuId() : Int
     abstract @StringRes fun getTitleId() : Int
     abstract fun setup(savedInstanceState: Bundle?)

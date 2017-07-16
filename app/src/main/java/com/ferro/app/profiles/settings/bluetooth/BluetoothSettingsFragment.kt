@@ -12,12 +12,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ferro.app.profiles.common.data.enitity.BluetoothDevicePreference
-import com.ferro.app.profiles.settings.SettingsInterface
 import ferro.places.com.profiles.R
 import kotlinx.android.synthetic.main.fragment_bluetooth_settings.*
 
-class BluetoothSettingsFragment : Fragment(), ActivityCompat.OnRequestPermissionsResultCallback, SettingsInterface  {
-    override fun save() {
+class BluetoothSettingsFragment : Fragment(), ActivityCompat.OnRequestPermissionsResultCallback {
+
+    fun save() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
