@@ -99,11 +99,12 @@ class MapSettingsActivity : MapActivity(), SettingsFragment.OnFragmentInteractio
 
             override fun onMarkerDragEnd(marker: Marker?) {
                 position = marker!!.position
-                mCircle!!.center = position
+
                 if(mCircle == null) {
                     circleOptions.center(position)
                     mCircle = mMap!!.addCircle(circleOptions)
                 }
+                mCircle!!.center = position
             }
         })
 
