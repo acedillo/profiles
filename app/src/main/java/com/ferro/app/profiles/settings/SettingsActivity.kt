@@ -35,9 +35,15 @@ class SettingsActivity : BaseActivity(), SettingsFragment.OnFragmentInteractionL
             mode = extras.getInt(EXTRA_MODE)
         }
         if (mode == MODE_SETTINGS) {
-            addFragment(SettingsFragment())
+            val fragment = fragmentManager.findFragmentByTag(SettingsFragment::class.java.name)
+            if(fragment == null) {
+                addFragment(SettingsFragment())
+            }
         } else {
-            addFragment(BluetoothSettingsFragment())
+            val fragment = fragmentManager.findFragmentByTag(BluetoothSettingsFragment::class.java.name)
+            if(fragment == null) {
+                addFragment(BluetoothSettingsFragment())
+            }
         }
     }
 

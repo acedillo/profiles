@@ -35,6 +35,7 @@ abstract class BaseActivity : AppCompatActivity(), ActivityCompat.OnRequestPermi
 
     /**
      * Method to add a fragment to the main layout
+     * it sets the tag to the fragment.javaClass.name
      */
     open fun addFragment(fragment: Fragment){
         fragmentManager.beginTransaction()
