@@ -13,12 +13,14 @@ import com.ferro.app.profiles.settings.MODE_SETTINGS
 import com.ferro.app.profiles.settings.MapSettingsActivity
 import com.ferro.app.profiles.settings.SettingsActivity
 import com.ferro.app.profiles.util.MapUtil
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.Marker
 import ferro.places.com.profiles.R
 import kotlinx.android.synthetic.main.activity_home.*
 
 const val ACTIVITY_REQUEST_DATA_SAVED: Int = 1001
-class HomeActivity : MapActivity() {
+class HomeActivity : MapActivity(), GoogleMap.OnInfoWindowClickListener {
 
     override fun getLayoutId(): Int {
         return R.layout.activity_home
@@ -44,6 +46,7 @@ class HomeActivity : MapActivity() {
             startActivityForResult(intent, ACTIVITY_REQUEST_DATA_SAVED)
         }
         loadMarkers()
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -63,14 +66,23 @@ class HomeActivity : MapActivity() {
         }
     }
 
-    fun loadMarkers(){
+    override fun onInfoWindowClick(marker: Marker?){
+        if(marker != null && marker.tag is PlaceSettings){
+            val place : PlaceSettings = marker.tag as PlaceSettings
+            val intent = MapSettingsActivity().IntentBuilder(this).placeSetting(place).build()
+            startActivity(intent)
+        }
+    }
+
+    private fun loadMarkers(){
         object : AsyncTask<Unit, Unit, List<PlaceSettings>>(){
             override fun doInBackground(vararg params: Unit?): List<PlaceSettings> {
                 return SettingsManager.getPlacesDao(this@HomeActivity).getPlaceList()
             }
 
             override fun onPostExecute(result: List<PlaceSettings>?) {
-                MapUtil.loadMarkersIntoMap(result!!, mMap!!, this@HomeActivity)
+                MapUtil.loadMarkersIntoMap(result!!, mMap!!)
+                mMap!!.setOnInfoWindowClickListener(this@HomeActivity)
                 super.onPostExecute(result)
             }
         }.execute()

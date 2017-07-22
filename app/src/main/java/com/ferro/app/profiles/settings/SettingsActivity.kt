@@ -34,6 +34,7 @@ class SettingsActivity : BaseActivity(), SettingsFragment.OnFragmentInteractionL
         if (extras.containsKey(EXTRA_MODE)) {
             mode = extras.getInt(EXTRA_MODE)
         }
+
         if (mode == MODE_SETTINGS) {
             val fragment = fragmentManager.findFragmentByTag(SettingsFragment::class.java.name)
             if(fragment == null) {
@@ -47,6 +48,14 @@ class SettingsActivity : BaseActivity(), SettingsFragment.OnFragmentInteractionL
         }
     }
 
+    override fun onBackPressed() {
+        if(fragmentManager.backStackEntryCount <= 1){
+            finish()
+            return
+        }
+        super.onBackPressed()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if(item!!.itemId == R.id.action_save){
             val fragment = getCurrentFragment()
@@ -56,7 +65,6 @@ class SettingsActivity : BaseActivity(), SettingsFragment.OnFragmentInteractionL
             if(fragment is BluetoothSettingsFragment){
                 fragment.save()
             }
-
         }
         return super.onOptionsItemSelected(item)
     }
