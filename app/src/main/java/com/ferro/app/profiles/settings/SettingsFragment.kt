@@ -1,13 +1,11 @@
 package com.ferro.app.profiles.settings
 
+import android.app.Activity
 import android.content.Context
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
-import android.preference.Preference
-import android.preference.PreferenceFragment
-import android.preference.RingtonePreference
-import android.preference.SwitchPreference
+import android.preference.*
 import android.support.v4.app.Fragment
 import android.view.View
 import android.widget.Toast
@@ -22,15 +20,21 @@ import ferro.places.com.profiles.R
  * [SettingsFragment.OnFragmentInteractionListener] interface
  * to handle interaction events.
  */
-const val DEFAULT_LAT_LONG : Double = 200.0
-class SettingsFragment : PreferenceFragment(){
+const val DEFAULT_LAT_LONG: Double = 200.0
+const val ARG_PREFERENCE: String = "arg.preference"
+
+class SettingsFragment : PreferenceFragment() {
+
+    private val DEFAULT_PREFERENCE_NAME: String = "name.default.setting"
 
     private var mListener: OnFragmentInteractionListener? = null
     private var mDefaultSettings: PlaceSettings? = null
 
-    private var mVolumePreference : VolumePreference? = null
-    private var mWifiPreference : SwitchPreference? = null
-    private var mBluetoothPreference : SwitchPreference? = null
+    private var mVolumePreference: VolumePreference? = null
+    private var mWifiPreference: SwitchPreference? = null
+    private var mBluetoothPreference: SwitchPreference? = null
+    private var mNamePreference: EditTextPreference? = null
+    private var mRingtonePreference: RingtonePreference? = null
 
     private var mRingtone: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,11 +49,18 @@ class SettingsFragment : PreferenceFragment(){
             mRingtone = newValue as String
             true
         }
-        object : AsyncTask<Void, Void, PlaceSettings>(){
+
+        if (arguments != null && arguments.containsKey(ARG_PREFERENCE)) {
+            initializeSettings(arguments.getParcelable(ARG_PREFERENCE))
+            return
+        }
+        object : AsyncTask<Void, Void, PlaceSettings>() {
             override fun doInBackground(vararg params: Void?): PlaceSettings {
                 val defaultPlaceSettings = SettingsManager.getPlacesDao(activity).getDefaultPlaceSettings()
-                if(defaultPlaceSettings.isEmpty()){
-                    return PlaceSettings()
+                if (defaultPlaceSettings.isEmpty()) {
+                    val placeSettings: PlaceSettings = PlaceSettings()
+                    placeSettings.name = DEFAULT_PREFERENCE_NAME
+                    return placeSettings
                 }
                 return defaultPlaceSettings[0]
             }
@@ -58,22 +69,6 @@ class SettingsFragment : PreferenceFragment(){
                 initializeSettings(result)
             }
         }.execute()
-        super.onViewCreated(view, savedInstanceState)
-    }
-
-    private fun initializeSettings(settings: PlaceSettings?) {
-
-        if(settings == null){
-            return
-        }
-        mDefaultSettings = settings
-        mVolumePreference = findPreference(getString(R.string.volume_preference_key)) as VolumePreference
-        mWifiPreference = findPreference(getString(R.string.wifi_preference_key)) as SwitchPreference
-        mBluetoothPreference = findPreference(getString(R.string.bluetooth_preference_key)) as SwitchPreference
-
-        mWifiPreference!!.isChecked = settings!!.wifiOn
-        mBluetoothPreference!!.isChecked = settings.bluetoothOn
-        mVolumePreference!!.setProgress(settings.ringtoneVolume)
     }
 
     override fun onAttach(context: Context?) {
@@ -90,37 +85,94 @@ class SettingsFragment : PreferenceFragment(){
         mListener = null
     }
 
-    fun save(latitude: Double = DEFAULT_LAT_LONG, longitude: Double = DEFAULT_LAT_LONG, radius : Double = 0.0) {
+    fun save(latitude: Double = DEFAULT_LAT_LONG, longitude: Double = DEFAULT_LAT_LONG, radius: Double = 0.0) {
         fillSettingValues()
         mDefaultSettings!!.longitude = longitude
         mDefaultSettings!!.latitude = latitude
         mDefaultSettings!!.radius = radius
-        object : AsyncTask<PlaceSettings, Void, Unit>(){
+        object : AsyncTask<PlaceSettings, Void, Unit>() {
             override fun doInBackground(vararg params: PlaceSettings?): Unit {
                 val defaultPlaceSettings = SettingsManager.getPlacesDao(activity).getDefaultPlaceSettings()
-                if(mDefaultSettings!!.latitude == DEFAULT_LAT_LONG) {
+                if (mDefaultSettings!!.latitude == DEFAULT_LAT_LONG) {
                     if (defaultPlaceSettings.isEmpty()) {
                         return SettingsManager.getPlacesDao(activity).addPlace(mDefaultSettings!!)
                     } else {
                         return SettingsManager.getPlacesDao(activity).updatePlace(mDefaultSettings!!)
                     }
-                }else{
+                } else {
                     return SettingsManager.getPlacesDao(activity).addPlace(mDefaultSettings!!)
                 }
             }
 
             override fun onPostExecute(result: Unit?) {
                 Toast.makeText(activity, "data saved", Toast.LENGTH_LONG).show()
+                activity.setResult(Activity.RESULT_OK)
+                activity.finish()
             }
         }.execute()
     }
 
-    private fun fillSettingValues(){
+    private fun initializeSettings(settings: PlaceSettings?) {
+
+        if (settings == null) {
+            return
+        }
+        mDefaultSettings = settings
+        mVolumePreference = findPreference(getString(R.string.volume_preference_key)) as VolumePreference
+        mWifiPreference = findPreference(getString(R.string.wifi_preference_key)) as SwitchPreference
+        mBluetoothPreference = findPreference(getString(R.string.bluetooth_preference_key)) as SwitchPreference
+        mNamePreference = findPreference(getString(R.string.name_preference_key)) as EditTextPreference
+        mRingtonePreference = findPreference(getString(R.string.ringtone_preference_key)) as RingtonePreference
+
+        mWifiPreference!!.isChecked = settings!!.wifiOn
+        mBluetoothPreference!!.isChecked = settings.bluetoothOn
+        mVolumePreference!!.setProgress(settings.ringtoneVolume)
+
+        mRingtonePreference!!.summary = settings.ringtone
+        if (settings.name == DEFAULT_PREFERENCE_NAME) {
+            preferenceScreen.removePreference(mNamePreference)
+        } else {
+            if (settings.name.isBlank()) {
+                settings.name = activity.getString(R.string.default_place_setting_name)
+            }
+            mNamePreference!!.text = settings.name
+            mNamePreference!!.summary = settings.name
+        }
+        setListeners()
+    }
+
+    private fun setListeners() {
+        if (mNamePreference != null) {
+            mNamePreference!!.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+                mNamePreference!!.summary = newValue as String
+                false
+            }
+        }
+        mRingtonePreference!!.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+            mRingtonePreference!!.summary = newValue as String
+            false
+        }
+    }
+
+    private fun fillSettingValues() {
         mDefaultSettings!!.ringtone = mRingtone
         mDefaultSettings!!.bluetoothOn = mBluetoothPreference!!.isChecked
         mDefaultSettings!!.wifiOn = mWifiPreference!!.isChecked
         mDefaultSettings!!.ringtoneVolume = mVolumePreference!!.getProgress()
+        mDefaultSettings!!.name = mNamePreference!!.text
     }
+
+
+    companion object {
+        fun newInstance(placeSettings: PlaceSettings): SettingsFragment {
+            val fragment = SettingsFragment()
+            val args = Bundle()
+            args.putParcelable(ARG_PREFERENCE, placeSettings)
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this

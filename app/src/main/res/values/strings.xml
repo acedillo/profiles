@@ -2,9 +2,8 @@
     <string name="app_name">Places</string>
     <string name="title_activity_maps">Places</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="default_place_setting_name">Place</string>
     <string name="settings_save">Save</string>
 
     <string name="title_volume_section">Volume</string>
@@ -12,6 +11,7 @@
     <string name="title_wireless_section">Wireless</string>
     <string name="title_ringtone_setting">Ringtone</string>
 
+    <string name="title_name_preference">Name</string>
     <string name="title_wifi_preference">Wi-fi</string>
     <string name="title_bluetooth_preference">Bluetooth</string>
 
@@ -20,6 +20,11 @@
     <string name="main_bluetooth">main bluetooth</string>
     <string name="main_prefs">Default settings</string>
     <string name="title_default_settings">Default Settings</string>
+
+    <string name="marker_wifi">Wi-fi: </string>
+    <string name="marker_bluetoth">Bluetooth: </string>
+    <string name="marker_volume">Volume: </string>
+    <string name="marker_ringtone">Ringtone:</string>
 
 
 </resources>

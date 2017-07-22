@@ -1,10 +1,13 @@
 package com.ferro.app.profiles.settings
 
+import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.SeekBar
 import com.ferro.app.profiles.common.activity.MapActivity
+import com.ferro.app.profiles.common.data.enitity.PlaceSettings
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.Circle
@@ -17,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_settings.*
 
 class MapSettingsActivity : MapActivity(), SettingsFragment.OnFragmentInteractionListener {
 
+    private val EXTRA_PLACE_SETTING : String = "extra.map.settings.activity.place.settings"
     var mCircle: Circle? = null
 
     override fun getLayoutId(): Int {
@@ -35,11 +39,17 @@ class MapSettingsActivity : MapActivity(), SettingsFragment.OnFragmentInteractio
         val mapFragment = supportFragmentManager
                 .findFragmentById(R.id.mMap) as SupportMapFragment
         mapFragment.getMapAsync(this)
+        var placeSettings : PlaceSettings = PlaceSettings()
+        if(intent.extras != null && intent.extras!!.containsKey(EXTRA_PLACE_SETTING)){
+           placeSettings = intent.extras.getParcelable(EXTRA_PLACE_SETTING)
+        }
+        val fragment : SettingsFragment = SettingsFragment.newInstance(placeSettings)
+        fragmentManager.beginTransaction().add(R.id.mSettingsFragmentContainer, fragment).commit()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if(item!!.itemId == R.id.action_save){
-            val settingsFragment = fragmentManager.findFragmentById(R.id.mSettingsFragment)
+            val settingsFragment = fragmentManager.findFragmentById(R.id.mSettingsFragmentContainer)
             if(mCircle != null && settingsFragment is SettingsFragment){
                 settingsFragment.save(mCircle!!.center.latitude, mCircle!!.center.longitude, mCircle!!.radius)
             }
@@ -47,8 +57,6 @@ class MapSettingsActivity : MapActivity(), SettingsFragment.OnFragmentInteractio
         }
         return super.onOptionsItemSelected(item)
     }
-
-
 
     override fun onMapReady(googleMap: GoogleMap) {
         super.onMapReady(googleMap)
@@ -88,6 +96,7 @@ class MapSettingsActivity : MapActivity(), SettingsFragment.OnFragmentInteractio
             }
 
         })
+
         mMap!!.setOnMarkerDragListener(object : GoogleMap.OnMarkerDragListener {
             override fun onMarkerDragStart(p0: Marker?) {
                //NOP
@@ -107,9 +116,22 @@ class MapSettingsActivity : MapActivity(), SettingsFragment.OnFragmentInteractio
                 mCircle!!.center = position
             }
         })
+    }
 
+    inner class IntentBuilder(context: Context) {
+        val intent : Intent = Intent(context, MapSettingsActivity::class.java)
+
+        fun placeSetting(placeSetting : PlaceSettings) : IntentBuilder{
+            intent.putExtra(EXTRA_PLACE_SETTING, placeSetting)
+            return this
+        }
+
+        fun build() : Intent{
+            return intent
+        }
 
     }
+
 
     override fun sendUserToCurrentLocation(addMarker: Boolean, zoom: Float) {
         super.sendUserToCurrentLocation(true, 17f)

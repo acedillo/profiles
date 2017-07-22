@@ -8,7 +8,7 @@ import com.ferro.app.profiles.common.data.enitity.PlaceSettings
  */
 @Dao
 interface PlacesDao {
-    @Query("SELECT * FROM setting")
+    @Query("SELECT * FROM setting WHERE latitude != 200 AND longitude != 200")
     fun getPlaceList() : List<PlaceSettings>
 
     @Query("SELECT * FROM setting WHERE latitude == 200 AND longitude == 200")

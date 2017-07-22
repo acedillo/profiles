@@ -1,5 +1,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <EditTextPreference
+        android:key="@string/name_preference_key"
+        android:title="@string/title_name_preference"/>
+
     <PreferenceCategory
         android:title="@string/title_ringtone_section">
 

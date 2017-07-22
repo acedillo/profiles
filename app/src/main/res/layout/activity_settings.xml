@@ -21,11 +21,10 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"/>
 
-    <fragment
-        android:id="@+id/mSettingsFragment"
+    <FrameLayout
+        android:id="@+id/mSettingsFragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:name="com.ferro.app.profiles.settings.SettingsFragment" />
+        android:layout_weight="1"/>
 
 </LinearLayout>

@@ -1,6 +1,9 @@
 package com.ferro.app.profiles.util
 
 import android.app.Activity
+import android.content.Context
+import android.support.annotation.NonNull
+import com.ferro.app.profiles.common.data.enitity.PlaceSettings
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -33,5 +36,16 @@ class MapUtil{
                 }
             })
         }
+
+        fun loadMarkersIntoMap(@NonNull places : List<PlaceSettings>, @NonNull map : GoogleMap, @NonNull context : Context){
+            for(place in places) {
+                val markerOptions: MarkerOptions = MarkerOptions()
+                markerOptions.position(LatLng(place.latitude, place.longitude))
+                        .title(place.name)
+
+                map.addMarker(markerOptions)
+            }
+        }
     }
+
 }

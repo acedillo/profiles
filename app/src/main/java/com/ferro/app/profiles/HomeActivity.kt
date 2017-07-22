@@ -1,17 +1,23 @@
 package com.ferro.app.profiles
 
+import android.app.Activity
 import android.content.Intent
+import android.os.AsyncTask
 import android.os.Bundle
 import android.view.MenuItem
 import com.ferro.app.profiles.common.activity.MapActivity
+import com.ferro.app.profiles.common.data.SettingsManager
+import com.ferro.app.profiles.common.data.enitity.PlaceSettings
 import com.ferro.app.profiles.settings.MODE_BLUETOOTH
 import com.ferro.app.profiles.settings.MODE_SETTINGS
 import com.ferro.app.profiles.settings.MapSettingsActivity
 import com.ferro.app.profiles.settings.SettingsActivity
+import com.ferro.app.profiles.util.MapUtil
 import com.google.android.gms.maps.SupportMapFragment
 import ferro.places.com.profiles.R
 import kotlinx.android.synthetic.main.activity_home.*
 
+const val ACTIVITY_REQUEST_DATA_SAVED: Int = 1001
 class HomeActivity : MapActivity() {
 
     override fun getLayoutId(): Int {
@@ -34,9 +40,10 @@ class HomeActivity : MapActivity() {
         mapFragment.getMapAsync(this)
 
         mAddLocationButton.setOnClickListener { _ ->
-            val intent : Intent = Intent(this@HomeActivity, MapSettingsActivity::class.java)
-            startActivity(intent)
+            val intent = MapSettingsActivity().IntentBuilder(this@HomeActivity).placeSetting(PlaceSettings()).build()
+            startActivityForResult(intent, ACTIVITY_REQUEST_DATA_SAVED)
         }
+        loadMarkers()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -47,5 +54,28 @@ class HomeActivity : MapActivity() {
         startActivity(SettingsActivity().IntentBuilder(this).mode(mode).build())
         return super.onOptionsItemSelected(item)
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(requestCode == ACTIVITY_REQUEST_DATA_SAVED){
+            if(resultCode == Activity.RESULT_OK){
+                loadMarkers()
+            }
+        }
+    }
+
+    fun loadMarkers(){
+        object : AsyncTask<Unit, Unit, List<PlaceSettings>>(){
+            override fun doInBackground(vararg params: Unit?): List<PlaceSettings> {
+                return SettingsManager.getPlacesDao(this@HomeActivity).getPlaceList()
+            }
+
+            override fun onPostExecute(result: List<PlaceSettings>?) {
+                MapUtil.loadMarkersIntoMap(result!!, mMap!!, this@HomeActivity)
+                super.onPostExecute(result)
+            }
+        }.execute()
+    }
+
+
 
 }

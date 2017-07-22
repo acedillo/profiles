@@ -48,7 +48,9 @@ class VolumePreference : Preference {
     }
 
     fun setProgress(progress : Int) {
-        mVolumeBar!!.progress = progress
+        if(mVolumeBar != null) {
+            mVolumeBar!!.progress = progress
+        }
         mProgress = progress
     }
 
