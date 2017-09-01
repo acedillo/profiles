@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
 /**
+ * Utility class for Map related operations
  * Created by Abraham on 6/30/2017.
  */
 

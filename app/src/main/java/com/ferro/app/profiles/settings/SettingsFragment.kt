@@ -85,6 +85,23 @@ class SettingsFragment : PreferenceFragment() {
         mListener = null
     }
 
+    /**
+     * Deletes current place from database
+     */
+    fun delete(){
+        object : AsyncTask<Unit, Unit, Unit>(){
+            override fun doInBackground(vararg params: Unit?) {
+                SettingsManager.getPlacesDao(activity).deletePlace(mDefaultSettings!!)
+            }
+            override fun onPostExecute(result: Unit?) {
+                dataUpdated()
+            }
+        }.execute()
+    }
+
+    /**
+     * Saves a place settings into the data base.
+     */
     fun save(latitude: Double = DEFAULT_LAT_LONG, longitude: Double = DEFAULT_LAT_LONG, radius: Double = 0.0) {
         fillSettingValues()
         mDefaultSettings!!.longitude = longitude
@@ -105,11 +122,15 @@ class SettingsFragment : PreferenceFragment() {
             }
 
             override fun onPostExecute(result: Unit?) {
-                Toast.makeText(activity, "data saved", Toast.LENGTH_LONG).show()
-                activity.setResult(Activity.RESULT_OK)
-                activity.finish()
+               dataUpdated()
             }
         }.execute()
+    }
+
+    private fun dataUpdated(){
+        Toast.makeText(activity, "data saved", Toast.LENGTH_LONG).show()
+        activity.setResult(Activity.RESULT_OK)
+        activity.finish()
     }
 
     private fun initializeSettings(settings: PlaceSettings?) {

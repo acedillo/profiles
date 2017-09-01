@@ -57,13 +57,17 @@ class SettingsActivity : BaseActivity(), SettingsFragment.OnFragmentInteractionL
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        val fragment = getCurrentFragment()
         if(item!!.itemId == R.id.action_save){
-            val fragment = getCurrentFragment()
             if(fragment is SettingsFragment){
                 fragment.save()
             }
             if(fragment is BluetoothSettingsFragment){
                 fragment.save()
+            }
+        }else if(item.itemId == R.id.action_delete){
+            if(fragment is SettingsFragment){
+                fragment.delete()
             }
         }
         return super.onOptionsItemSelected(item)

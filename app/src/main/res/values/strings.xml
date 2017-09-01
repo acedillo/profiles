@@ -25,6 +25,7 @@
     <string name="marker_bluetoth">Bluetooth: </string>
     <string name="marker_volume">Volume: </string>
     <string name="marker_ringtone">Ringtone:</string>
+    <string name="settings_delete">Delete</string>
 
 
 </resources>

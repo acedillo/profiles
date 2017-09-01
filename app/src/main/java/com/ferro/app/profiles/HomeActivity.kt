@@ -42,7 +42,10 @@ class HomeActivity : MapActivity(), GoogleMap.OnInfoWindowClickListener {
         mapFragment.getMapAsync(this)
 
         mAddLocationButton.setOnClickListener { _ ->
-            val intent = MapSettingsActivity().IntentBuilder(this@HomeActivity).placeSetting(PlaceSettings()).build()
+            val placeSetting : PlaceSettings = PlaceSettings()
+            placeSetting.longitude = mMap!!.cameraPosition!!.target!!.longitude
+            placeSetting.latitude = mMap!!.cameraPosition!!.target!!.latitude
+            val intent = MapSettingsActivity().IntentBuilder(this@HomeActivity).placeSetting(placeSetting).build()
             startActivityForResult(intent, ACTIVITY_REQUEST_DATA_SAVED)
         }
         loadMarkers()
@@ -61,6 +64,7 @@ class HomeActivity : MapActivity(), GoogleMap.OnInfoWindowClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == ACTIVITY_REQUEST_DATA_SAVED){
             if(resultCode == Activity.RESULT_OK){
+                mMap!!.clear()
                 loadMarkers()
             }
         }
@@ -70,7 +74,7 @@ class HomeActivity : MapActivity(), GoogleMap.OnInfoWindowClickListener {
         if(marker != null && marker.tag is PlaceSettings){
             val place : PlaceSettings = marker.tag as PlaceSettings
             val intent = MapSettingsActivity().IntentBuilder(this).placeSetting(place).build()
-            startActivity(intent)
+            startActivityForResult(intent, ACTIVITY_REQUEST_DATA_SAVED)
         }
     }
 
